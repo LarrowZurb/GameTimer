@@ -2,4 +2,4 @@
 
 ![alt text](GameTimer.png "GameTimer")
 
-A turn timer for table top games
+A Unity Project for a table top turn timer.
