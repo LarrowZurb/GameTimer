@@ -1,25 +1,28 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class MinuteUpButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
-{
+namespace GameTimer {
 
-	[SerializeField] settingsManager manager;
+	public class MinuteUpButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
 
-	void IPointerDownHandler.OnPointerDown( PointerEventData eventData ) {
-		StartCoroutine("HandleDown");
-	}
+#pragma warning disable 649
+		[SerializeField] settingsManager manager;
+#pragma warning restore 649
 
-	void IPointerUpHandler.OnPointerUp( PointerEventData eventData ) {
-		StopCoroutine( "HandleDown" );
-	}
+		void IPointerDownHandler.OnPointerDown( PointerEventData eventData ) {
+			StartCoroutine( "HandleDown" );
+		}
 
-	IEnumerator HandleDown() {
-		while ( true ) {
-			manager.OnMinuteUp();
-			yield return new WaitForSeconds( 0.25f );
+		void IPointerUpHandler.OnPointerUp( PointerEventData eventData ) {
+			StopCoroutine( "HandleDown" );
+		}
+
+		IEnumerator HandleDown() {
+			while ( true ) {
+				manager.OnMinuteUp();
+				yield return new WaitForSeconds( 0.25f );
+			}
 		}
 	}
 }
