@@ -53,7 +53,7 @@ namespace GameTimer {
 		private float roundEndVolume = 1f;
 
 
-		public GameManager() {
+		public void Awake() {
 			if ( instance == null ) {
 				instance = this;
 			} else {
@@ -136,17 +136,21 @@ namespace GameTimer {
 			if ( timer.IsRunning ) {
 				currentPlayerTurn.interactable = false;
 				currentPlayerTurn.image.color = new Color( 1, 0, 0, 0.5f );
-				currentPlayerTurn.GetComponentInChildren<TMP_Text>().text = "Waiting";
+				//currentPlayerTurn.GetComponentInChildren<TMP_Text>().text = "Waiting";
 
 				if ( currentPlayerTurn == playerLeftButton ) {
+					playerLeftText.text = "Waiting";
+					playerRightText.text = "End\nTurn";
 					currentPlayerTurn = playerRightButton;
 				} else {
+					playerRightText.text = "Waiting";
+					playerLeftText.text = "End\nTurn";
 					currentPlayerTurn = playerLeftButton;
 				}
 
 				currentPlayerTurn.interactable = true;
 				currentPlayerTurn.image.color = Color.green;
-				currentPlayerTurn.GetComponentInChildren<TMP_Text>().text = "End\nTurn";
+				//currentPlayerTurn.GetComponentInChildren<TMP_Text>().text = "End\nTurn";
 				clock.gameObject.transform.Rotate( 0, 0, 180f );
 
 				timer.Restart();
@@ -155,18 +159,20 @@ namespace GameTimer {
 				if ( _playerButton == playerLeftButton ) {
 					playerRightButton.interactable = false;
 					playerRightButton.image.color = new Color( 1, 0, 0, 0.5f );
-					playerRightButton.GetComponentInChildren<TMP_Text>().text = "Waiting";
+					playerRightText.text = "Waiting";
+					playerLeftText.text = "End\nTurn";
 					clock.gameObject.transform.eulerAngles = new Vector3( 0, 0, -90 );
 				} else {
 					playerLeftButton.interactable = false;
 					playerLeftButton.image.color = new Color( 1, 0, 0, 0.5f );
-					playerLeftButton.GetComponentInChildren<TMP_Text>().text = "Waiting";
+					playerLeftText.text = "Waiting";
+					playerRightText.text = "End\nTurn";
 					clock.gameObject.transform.eulerAngles = new Vector3( 0, 0, 90 );
 				}
 				currentPlayerTurn = _playerButton;
 				currentPlayerTurn.interactable = true;
 				currentPlayerTurn.image.color = Color.green;
-				currentPlayerTurn.GetComponentInChildren<TMP_Text>().text = "End\nTurn";
+				//currentPlayerTurn.GetComponentInChildren<TMP_Text>().text = "End\nTurn";
 
 				timer.Reset();
 				timer.Start();

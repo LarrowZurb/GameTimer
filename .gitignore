@@ -9,7 +9,10 @@
 [Bb]uilds/
 [Ll]ogs/
 [Mm]emoryCaptures/
-[Cc]onsolePro/
+
+# Imported packages
+ConsolePro/
+RainbowAssets/
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta
@@ -60,3 +63,4 @@ sysinfo.txt
 crashlytics-build.properties
 
 GameTimer/Assets/ConsolePro.meta
+GameTimer/Assets/Plugins/RainbowAssets.meta
