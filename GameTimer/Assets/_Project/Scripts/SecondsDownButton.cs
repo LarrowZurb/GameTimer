@@ -7,14 +7,14 @@ namespace GameTimer {
 	public class SecondsDownButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
 
 #pragma warning disable 649
-		[SerializeField] settingsManager manager;
+		[SerializeField] SettingsManager manager;
 #pragma warning restore 649
 
-		void IPointerDownHandler.OnPointerDown( PointerEventData eventData ) {
+		void IPointerDownHandler.OnPointerDown( PointerEventData _eventData ) {
 			StartCoroutine( "HandleDown" );
 		}
 
-		void IPointerUpHandler.OnPointerUp( PointerEventData eventData ) {
+		void IPointerUpHandler.OnPointerUp( PointerEventData _eventData ) {
 			StopCoroutine( "HandleDown" );
 		}
 

@@ -4,50 +4,69 @@ using UnityEngine.UI;
 
 namespace GameTimer {
 
-	public class settingsManager : MonoBehaviour {
+	public class SettingsManager : MonoBehaviour {
 
-#pragma warning disable 649
+
 		[SerializeField] TMP_Text minutes_text;
 		[SerializeField] TMP_Text seconds_text;
 		[SerializeField] Toggle toggle_countDown;
 		[SerializeField] Toggle toggle_roundEnd;
 		[SerializeField] Slider slider_countDown;
 		[SerializeField] Slider slider_roundEnd;
-#pragma warning restore 649
+
 
 		private int minutes;
 		private int seconds;
 
+
 		private void OnEnable() {
-			float roundTime = GameManager.instance.GetRoundTime();
-			minutes = (int)(roundTime / 60);
-			seconds = (int)(roundTime - (minutes * 60));
+			LoadPlayerPrefs();
 
-			toggle_countDown.isOn = PlayerPrefs.GetString( "countDown_isOn", "true" ).ToLower().Equals( "true" );
-			slider_countDown.value = PlayerPrefs.GetFloat( "countDown_volume", 1f );
-
-			toggle_roundEnd.isOn = PlayerPrefs.GetString( "roundEnd_isOn", "true" ).ToLower().Equals( "true" );
-			slider_roundEnd.value = PlayerPrefs.GetFloat( "roundEnd_volume", 1f );
+			float gameTime = GameManager.instance.CurrentGame.DefaultGameTime;
+			minutes = (int)(gameTime / 60);
+			seconds = (int)(gameTime - (minutes * 60));
 
 			SetCurrentTimeAsText();
 		}
 
-		private void OnDisable() {
-			GameManager.instance.SetRoundTime( minutes * 60 + seconds );
-			GameManager.instance.SetCountdown( toggle_countDown.isOn, slider_countDown.value );
-			GameManager.instance.SetRoundEnd( toggle_roundEnd.isOn,slider_roundEnd.value );
 
-			PlayerPrefs.SetFloat( "roundTime", minutes * 60 + seconds );
-			PlayerPrefs.SetString( "countDown_isOn", toggle_countDown.isOn.ToString().ToLower() );
-			PlayerPrefs.SetFloat( "countDown_volume", slider_countDown.value );
-			PlayerPrefs.SetString( "roundEnd_isOn", toggle_roundEnd.isOn.ToString().ToLower() );
-			PlayerPrefs.SetFloat( "roundEnd_volume", slider_roundEnd.value );
+		private void OnDisable() {
+			SavePlayerPrefs();
+			
 		}
+
 
 		public void SetCurrentTimeAsText() {
 			minutes_text.text = $"{minutes:D2}";
 			seconds_text.text = $"{seconds:D2}";
 		}
+
+
+		private void LoadPlayerPrefs() {
+			GameManager.instance.SetGameType( PlayerPrefs.GetString( "gameType" ) );
+
+			GameManager.instance.CurrentGame.DefaultGameTime = PlayerPrefs.GetFloat( "gameTime", GameManager.instance.CurrentGame.DefaultGameTime );
+			GameManager.instance.CurrentGame.DefaultTurnTime = PlayerPrefs.GetFloat( "turnTime", GameManager.instance.CurrentGame.DefaultTurnTime );
+
+			SoundManager.instance.CountdownEnabled = PlayerPrefs.GetString( "countDown_enabled", "true" ).Equals( "true" );
+			SoundManager.instance.CountdownVolume = PlayerPrefs.GetFloat( "countDown_volume", 1f );
+			SoundManager.instance.RoundEndEnabled = PlayerPrefs.GetString( "roundEnd_enabled", "true" ).Equals( "true" );
+			SoundManager.instance.RoundEndVolume = PlayerPrefs.GetFloat( "roundEnd_volume", 1f );
+		}
+
+		public void SavePlayerPrefs() {
+			PlayerPrefs.SetString( "gameType", GameManager.instance.CurrentGameType.GameTypeName );
+
+			PlayerPrefs.SetFloat( "gameTime", GameManager.instance.CurrentGame.DefaultGameTime );
+			PlayerPrefs.SetFloat( "turnTime", GameManager.instance.CurrentGame.DefaultTurnTime );
+
+			PlayerPrefs.SetString( "countDown_enabled", SoundManager.instance.CountdownEnabled.ToString().ToLower() );
+			PlayerPrefs.SetFloat( "countDown_volume", SoundManager.instance.CountdownVolume );
+			PlayerPrefs.SetString( "roundEnd_enabled", SoundManager.instance.RoundEndEnabled.ToString().ToLower() );
+			PlayerPrefs.SetFloat( "roundEnd_volume", SoundManager.instance.RoundEndVolume );
+		}
+
+
 
 		public void OnMinuteUp() {
 			if ( minutes == 60 ) {
