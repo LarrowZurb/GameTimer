@@ -22,6 +22,7 @@ namespace GameTimer {
 		[SerializeField] private Image pauseButtonImage;
 		[SerializeField] private Button resetButton;
 		[SerializeField] private Button settingsButton;
+		[SerializeField] private Button quitButton;
 		[SerializeField] private GameObject settingPanel;
 		[SerializeField] private GameObject gameTimerUI;
 
@@ -62,6 +63,10 @@ namespace GameTimer {
 		}
 
 		#endregion
+
+		public void Quit() {
+			Application.Quit();
+		}
 
 
 		private void SetUpDictionary() {
@@ -122,6 +127,7 @@ namespace GameTimer {
 		public void OnGameStarted() {
 			pauseButton.interactable = true;
 			settingsButton.interactable = false;
+			quitButton.interactable = false;
 			resetButton.interactable = false;
 		}
 
@@ -130,6 +136,7 @@ namespace GameTimer {
 			currentGame.EndGame();
 			isPaused = false;
 			settingsButton.interactable = true;
+			quitButton.interactable = true;
 			resetButton.interactable = false;
 			pauseButton.interactable = false;
 			pauseButtonImage.sprite = pauseSprite;
